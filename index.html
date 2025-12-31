@@ -1,345 +1,820 @@
-import React from 'react';
-import { Rocket, Orbit, Atom, Globe, Target, BookOpen, Zap, Users } from 'lucide-react';
-import { motion } from 'framer-motion';
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploración Espacial - Curso de Cohetería</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@300;400;500&display=swap');
 
-const App = () => {
-  const courseModules = [
-    {
-      id: 1,
-      title: "Introducción de cohetes y transbordadores espaciales",
-      description: "Historia, evolución y principios fundamentales de los vehículos de lanzamiento.",
-      icon: Rocket,
-      color: "from-blue-500 to-cyan-600"
-    },
-    {
-      id: 2,
-      title: "Órbitas terrestres y tipos de órbitas",
-      description: "LEO, MEO, GEO, órbitas polares y transferencia de Hohmann.",
-      icon: Orbit,
-      color: "from-emerald-500 to-teal-600"
-    },
-    {
-      id: 3,
-      title: "Clasificación de los propelentes",
-      description: "Combustibles químicos, criogénicos, hipergólicos y avanzados.",
-      icon: Zap,
-      color: "from-orange-500 to-red-600"
-    },
-    {
-      id: 4,
-      title: "Sistema de transporte interplanetario",
-      description: "Misiones a Marte, Júpiter y conceptos de viaje interestelar.",
-      icon: Globe,
-      color: "from-indigo-500 to-purple-600"
-    },
-    {
-      id: 5,
-      title: "Ecuación y etapa del cohete",
-      description: "Ecuación de Tsiolkovsky y principios de diseño multietapa.",
-      icon: BookOpen,
-      color: "from-amber-500 to-yellow-600"
-    },
-    {
-      id: 6,
-      title: "Anatomía de cohetes",
-      description: "Estructura, sistemas de aviónica, propulsión y recuperación.",
-      icon: Atom,
-      color: "from-cyan-500 to-blue-600"
-    },
-    {
-      id: 7,
-      title: "Cohetes sólidos, líquidos e híbridos",
-      description: "Comparación de tecnologías, ventajas y aplicaciones específicas.",
-      icon: Target,
-      color: "from-fuchsia-500 to-pink-600"
-    },
-    {
-      id: 8,
-      title: "Impulso específico",
-      description: "Medición de eficiencia de propelentes y optimización del rendimiento.",
-      icon: Users,
-      color: "from-violet-500 to-purple-600"
-    }
-  ];
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0 }
-  };
+        :root {
+            --primary: #0ea5e9;
+            --primary-dark: #0284c7;
+            --secondary: #06b6d4;
+            --accent: #8b5cf6;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f1f5f9;
+            --gray: #94a3b8;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-  const staggerContainer = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b, #020617);
+            color: #f1f5f9;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-black text-white overflow-x-hidden">
-      {/* Stars Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {[...Array(150)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-white"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              width: `${Math.random() * 3}px`,
-              height: `${Math.random() * 3}px`,
-              opacity: Math.random() * 0.8 + 0.2,
-              animation: `twinkle ${Math.random() * 5 + 3}s infinite ${Math.random() * 2}s`
-            }}
-          />
-        ))}
-        <style jsx>{`
-          @keyframes twinkle {
+        /* Stars Background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite var(--delay);
+        }
+
+        @keyframes twinkle {
             0%, 100% { opacity: 0.2; }
             50% { opacity: 1; }
-          }
-        `}</style>
-      </div>
+        }
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-8"
-          >
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 mb-6 shadow-lg">
-              <Rocket className="w-12 h-12 text-white" />
-            </div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-300">
-              Exploración Espacial: <span className="block mt-2">Fundamentos de Cohetería</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto">
-              Domina los principios científicos y tecnológicos detrás de los viajes espaciales
-            </p>
-          </motion.div>
+        /* Header Styles */
+        .header {
+            padding: 2rem 0;
+            text-align: center;
+        }
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto"
-          >
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50">
-              <div className="text-blue-400 mb-3">
-                <Rocket className="w-8 h-8 mx-auto" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">8 Módulos</h3>
-              <p className="text-gray-400">Contenido exhaustivo y actualizado</p>
-            </div>
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50">
-              <div className="text-emerald-400 mb-3">
-                <BookOpen className="w-8 h-8 mx-auto" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">40+ Lecciones</h3>
-              <p className="text-gray-400">Teoría, ejemplos y ejercicios prácticos</p>
-            </div>
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50">
-              <div className="text-purple-400 mb-3">
-                <Globe className="w-8 h-8 mx-auto" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Certificación</h3>
-              <p className="text-gray-400">Reconocimiento internacional al finalizar</p>
-            </div>
-          </motion.div>
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, #ffffff, #93c5fd, #ffffff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+
+        .stat-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            min-width: 200px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+
+        .stat-number {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        /* Modules Section */
+        .section {
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, #ffffff, #60a5fa, #ffffff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+
+        .section-title p {
+            color: #94a3b8;
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.125rem;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .module-card {
+            background: linear-gradient(135deg, #1e40af, #0c4a6e);
+            border-radius: 16px;
+            padding: 1.75rem;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .module-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .module-card:hover::before {
+            opacity: 1;
+        }
+
+        .module-card:nth-child(2) { background: linear-gradient(135deg, #059669, #047857); }
+        .module-card:nth-child(3) { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+        .module-card:nth-child(4) { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+        .module-card:nth-child(5) { background: linear-gradient(135deg, #d97706, #b45309); }
+        .module-card:nth-child(6) { background: linear-gradient(135deg, #0891b2, #0e7490); }
+        .module-card:nth-child(7) { background: linear-gradient(135deg, #c026d3, #a21caf); }
+        .module-card:nth-child(8) { background: linear-gradient(135deg, #7e22ce, #6b21a8); }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .module-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .module-number {
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+
+        .module-title {
+            font-size: 1.375rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .module-description {
+            color: #cbd5e1;
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        /* Features Section */
+        .features {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(14, 165, 233, 0.4);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .cta-container {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.2), rgba(12, 74, 88, 0.2));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 24px;
+            padding: 3rem;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, #ffffff, #38bdf8, #ffffff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+
+        .cta p {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+            text-align: center;
+        }
+
+        .footer-logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-logo i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .footer-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #ffffff, #93c5fd, #ffffff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-subtitle {
+            color: #94a3b8;
+            margin-bottom: 2rem;
+        }
+
+        .copyright {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1.125rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+            
+            .section {
+                padding: 3rem 1rem;
+            }
+            
+            .modules-grid, .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .stagger-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Module-specific animations */
+        .module-card {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .module-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .module-card:nth-child(1).visible { transition-delay: 0.1s; }
+        .module-card:nth-child(2).visible { transition-delay: 0.2s; }
+        .module-card:nth-child(3).visible { transition-delay: 0.3s; }
+        .module-card:nth-child(4).visible { transition-delay: 0.4s; }
+        .module-card:nth-child(5).visible { transition-delay: 0.5s; }
+        .module-card:nth-child(6).visible { transition-delay: 0.6s; }
+        .module-card:nth-child(7).visible { transition-delay: 0.7s; }
+        .module-card:nth-child(8).visible { transition-delay: 0.8s; }
+    </style>
+</head>
+<body>
+    <!-- Stars Background -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-rocket"></i>
         </div>
-      </section>
-
-      {/* Course Modules Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-400">
-              Contenido del Curso
-            </h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-              Un currículo diseñado por expertos en ingeniería aeroespacial para proporcionarte 
-              una comprensión profunda de los fundamentos de la cohetería y la exploración espacial.
-            </p>
-          </motion.div>
-
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            {courseModules.map((module, index) => (
-              <motion.div
-                key={module.id}
-                variants={fadeInUp}
-                className="group"
-              >
-                <div className={`bg-gradient-to-br ${module.color} rounded-2xl p-6 h-full transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-2xl`}>
-                  <div className="flex items-center mb-4">
-                    <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
-                      <module.icon className="w-6 h-6 text-white" />
-                    </div>
-                    <span className="ml-3 text-lg font-semibold text-white">Módulo {module.id}</span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 text-white">{module.title}</h3>
-                  <p className="text-white/90 text-sm">{module.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+        <div class="hero">
+            <h1>Exploración Espacial:<br>Fundamentos de Cohetería</h1>
+            <p>Domina los principios científicos y tecnológicos detrás de los viajes espaciales</p>
         </div>
-      </section>
+    </header>
 
-      {/* Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-cyan-400">
-              ¿Qué Aprenderás?
-            </h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-              Este curso te proporcionará las herramientas necesarias para entender y aplicar 
-              los principios fundamentales de la ingeniería de cohetes.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mb-4">
-                <Rocket className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Diseño de Cohetes</h3>
-              <p className="text-gray-300">
-                Aprende a diseñar vehículos de lanzamiento desde los principios básicos hasta 
-                configuraciones avanzadas multietapa.
-              </p>
+    <!-- Stats Section -->
+    <div class="stats fade-in" id="statsSection">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-rocket"></i>
             </div>
-
-            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30">
-              <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center mb-4">
-                <Orbit className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Mecánica Orbital</h3>
-              <p className="text-gray-300">
-                Domina las leyes de Kepler, transferencias orbitales y cálculos de trayectoria 
-                para misiones espaciales.
-              </p>
-            </div>
-
-            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30">
-              <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4">
-                <Zap className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Propulsión Espacial</h3>
-              <p className="text-gray-300">
-                Comprende los sistemas de propulsión, desde motores químicos hasta tecnologías 
-                avanzadas como la propulsión eléctrica.
-              </p>
-            </div>
-
-            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30">
-              <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
-                <Globe className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Misiones Interplanetarias</h3>
-              <p className="text-gray-300">
-                Planifica misiones a otros planetas, calcula ventanas de lanzamiento y 
-                entiende los desafíos de la exploración profunda.
-              </p>
-            </div>
-
-            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30">
-              <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-lg flex items-center justify-center mb-4">
-                <BookOpen className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Matemáticas Espaciales</h3>
-              <p className="text-gray-300">
-                Aplica la ecuación de Tsiolkovsky, cálculos de delta-v y optimización de 
-                masa para misiones eficientes.
-              </p>
-            </div>
-
-            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30">
-              <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
-                <Atom className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-white">Análisis de Sistemas</h3>
-              <p className="text-gray-300">
-                Evalúa sistemas de aviónica, estructuras, recuperación y seguridad en 
-                vehículos espaciales modernos.
-              </p>
-            </div>
-          </div>
+            <div class="stat-number">8 Módulos</div>
+            <div class="stat-label">Contenido exhaustivo y actualizado</div>
         </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-gradient-to-r from-blue-600/20 to-cyan-600/20 backdrop-blur-sm rounded-3xl p-12 border border-blue-500/30"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-300">
-              Preparado para Despegar?
-            </h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Únete a la próxima generación de ingenieros espaciales y comienza tu viaje 
-              hacia las estrellas.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-blue-500 to-cyan-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                Inscribirse al Curso
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white/10 backdrop-blur-sm text-white font-bold py-4 px-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300"
-              >
-                Ver Temario Completo
-              </motion.button>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-book-open"></i>
             </div>
-          </motion.div>
+            <div class="stat-number">40+ Lecciones</div>
+            <div class="stat-label">Teoría, ejemplos y ejercicios prácticos</div>
         </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="flex justify-center mb-6">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500">
-              <Rocket className="w-8 h-8 text-white" />
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-globe-americas"></i>
             </div>
-          </div>
-          <h3 className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-300">
-            Exploración Espacial
-          </h3>
-          <p className="text-gray-400 mb-6">
-            Educación profesional en ingeniería aeroespacial
-          </p>
-          <div className="text-gray-500 text-sm">
-            © 2025 Exploración Espacial. Todos los derechos reservados.
-          </div>
+            <div class="stat-number">Certificación</div>
+            <div class="stat-label">Reconocimiento internacional al finalizar</div>
         </div>
-      </footer>
     </div>
-  );
-};
 
-export default App;
+    <!-- Modules Section -->
+    <section class="section" id="modulesSection">
+        <div class="section-title fade-in">
+            <h2>Contenido del Curso</h2>
+            <p>Un currículo diseñado por expertos en ingeniería aeroespacial para proporcionarte una comprensión profunda de los fundamentos de la cohetería y la exploración espacial.</p>
+        </div>
+        <div class="modules-grid">
+            <div class="module-card stagger-in">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="module-number">Módulo 1</div>
+                </div>
+                <h3 class="module-title">Introducción de cohetes y transbordadores espaciales</h3>
+                <p class="module-description">Historia, evolución y principios fundamentales de los vehículos de lanzamiento.</p>
+            </div>
+            <div class="module-card stagger-in">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <div class="module-number">Módulo 2</div>
+                </div>
+                <h3 class="module-title">Órbitas terrestres y tipos de órbitas</h3>
+                <p class="module-description">LEO, MEO, GEO, órbitas polares y transferencia de Hohmann.</p>
+            </div>
+            <div class="module-card stagger-in">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="module-number">Módulo 3</div>
+                </div>
+                <h3 class="module-title">Clasificación de los propelentes</h3>
+                <p class="module-description">Combustibles químicos, criogénicos, hipergólicos y avanzados.</p>
+            </div>
+            <div class="module-card stagger-in">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <div class="module-number">Módulo 4</div>
+                </div>
+                <h3 class="module-title">Sistema de transporte interplanetario</h3>
+                <p class="module-description">Misiones a Marte, Júpiter y conceptos de viaje interestelar.</p>
+            </div>
+            <div class="module-card stagger-in">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="module-number">Módulo 5</div>
+                </div>
+                <h3 class="module-title">Ecuación y etapa del cohete</h3>
+                <p class="module-description">Ecuación de Tsiolkovsky y principios de diseño multietapa.</p>
+            </div>
+            <div class="module-card stagger-in">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="module-number">Módulo 6</div>
+                </div>
+                <h3 class="module-title">Anatomía de cohetes</h3>
+                <p class="module-description">Estructura, sistemas de aviónica, propulsión y recuperación.</p>
+            </div>
+            <div class="module-card stagger-in">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <div class="module-number">Módulo 7</div>
+                </div>
+                <h3 class="module-title">Cohetes sólidos, líquidos e híbridos</h3>
+                <p class="module-description">Comparación de tecnologías, ventajas y aplicaciones específicas.</p>
+            </div>
+            <div class="module-card stagger-in">
+                <div class="module-header">
+                    <div class="module-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="module-number">Módulo 8</div>
+                </div>
+                <h3 class="module-title">Impulso específico</h3>
+                <p class="module-description">Medición de eficiencia de propelentes y optimización del rendimiento.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features" id="featuresSection">
+        <div class="section-title fade-in">
+            <h2>¿Qué Aprenderás?</h2>
+            <p>Este curso te proporcionará las herramientas necesarias para entender y aplicar los principios fundamentales de la ingeniería de cohetes.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3 class="feature-title">Diseño de Cohetes</h3>
+                <p class="feature-description">Aprende a diseñar vehículos de lanzamiento desde los principios básicos hasta configuraciones avanzadas multietapa.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <h3 class="feature-title">Mecánica Orbital</h3>
+                <p class="feature-description">Domina las leyes de Kepler, transferencias orbitales y cálculos de trayectoria para misiones espaciales.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <h3 class="feature-title">Propulsión Espacial</h3>
+                <p class="feature-description">Comprende los sistemas de propulsión, desde motores químicos hasta tecnologías avanzadas como la propulsión eléctrica.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <h3 class="feature-title">Misiones Interplanetarias</h3>
+                <p class="feature-description">Planifica misiones a otros planetas, calcula ventanas de lanzamiento y entiende los desafíos de la exploración profunda.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h3 class="feature-title">Matemáticas Espaciales</h3>
+                <p class="feature-description">Aplica la ecuación de Tsiolkovsky, cálculos de delta-v y optimización de masa para misiones eficientes.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h3 class="feature-title">Análisis de Sistemas</h3>
+                <p class="feature-description">Evalúa sistemas de aviónica, estructuras, recuperación y seguridad en vehículos espaciales modernos.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="ctaSection">
+        <div class="cta-container fade-in">
+            <h2>¿Preparado para Despegar?</h2>
+            <p>Únete a la próxima generación de ingenieros espaciales y comienza tu viaje hacia las estrellas.</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-primary">Inscribirse al Curso</a>
+                <a href="#" class="btn btn-secondary">Ver Temario Completo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">
+            <i class="fas fa-rocket"></i>
+        </div>
+        <h3 class="footer-title">Exploración Espacial</h3>
+        <p class="footer-subtitle">Educación profesional en ingeniería aeroespacial</p>
+        <p class="copyright">© 2025 Exploración Espacial. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Create stars background
+        document.addEventListener('DOMContentLoaded', function() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 3;
+                
+                // Random opacity
+                const opacity = Math.random() * 0.8 + 0.2;
+                
+                // Random animation duration and delay
+                const duration = Math.random() * 5 + 3;
+                const delay = Math.random() * 2;
+                
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.opacity = opacity;
+                star.style.setProperty('--duration', `${duration}s`);
+                star.style.setProperty('--delay', `${delay}s`);
+                
+                starsContainer.appendChild(star);
+            }
+            
+            // Intersection Observer for animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe fade-in elements
+            document.querySelectorAll('.fade-in, .stagger-in').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Module cards need special handling for staggered animation
+            const moduleCards = document.querySelectorAll('.module-card');
+            moduleCards.forEach(card => {
+                observer.observe(card);
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Button hover effects
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
