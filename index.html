@@ -1,428 +1,319 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Rocket, 
-  Orbit, 
-  Flame, 
-  Target, 
-  Layers, 
-  Scale, 
-  BookOpen, 
-  Play, 
-  Zap, 
-  Star, 
-  Download,
-  ChevronDown
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { Rocket, Orbit, Atom, Globe, Target, BookOpen, Zap, Users } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const App = () => {
-  const [ispData, setIspData] = useState({
-    propellant: 'RP-1/LOX',
-    isp: 311
-  });
-  const [tsiolData, setTsiolData] = useState({
-    ve: 3000,
-    m0: 1000,
-    mf: 200
-  });
-
-  const propellants = [
-    { name: 'RP-1/LOX', isp: 311, color: '#3b82f6' },
-    { name: 'LH₂/LOX', isp: 450, color: '#10b981' },
-    { name: 'Hiper-gólico (NTO/MMH)', isp: 320, color: '#f59e0b' },
-    { name: 'Sólido (HTPB)', isp: 270, color: '#ef4444' },
-    { name: 'Propulsión iónica', isp: 3000, color: '#8b5cf6' }
+  const courseModules = [
+    {
+      id: 1,
+      title: "Introducción de cohetes y transbordadores espaciales",
+      description: "Historia, evolución y principios fundamentales de los vehículos de lanzamiento.",
+      icon: Rocket,
+      color: "from-blue-500 to-cyan-600"
+    },
+    {
+      id: 2,
+      title: "Órbitas terrestres y tipos de órbitas",
+      description: "LEO, MEO, GEO, órbitas polares y transferencia de Hohmann.",
+      icon: Orbit,
+      color: "from-emerald-500 to-teal-600"
+    },
+    {
+      id: 3,
+      title: "Clasificación de los propelentes",
+      description: "Combustibles químicos, criogénicos, hipergólicos y avanzados.",
+      icon: Zap,
+      color: "from-orange-500 to-red-600"
+    },
+    {
+      id: 4,
+      title: "Sistema de transporte interplanetario",
+      description: "Misiones a Marte, Júpiter y conceptos de viaje interestelar.",
+      icon: Globe,
+      color: "from-indigo-500 to-purple-600"
+    },
+    {
+      id: 5,
+      title: "Ecuación y etapa del cohete",
+      description: "Ecuación de Tsiolkovsky y principios de diseño multietapa.",
+      icon: BookOpen,
+      color: "from-amber-500 to-yellow-600"
+    },
+    {
+      id: 6,
+      title: "Anatomía de cohetes",
+      description: "Estructura, sistemas de aviónica, propulsión y recuperación.",
+      icon: Atom,
+      color: "from-cyan-500 to-blue-600"
+    },
+    {
+      id: 7,
+      title: "Cohetes sólidos, líquidos e híbridos",
+      description: "Comparación de tecnologías, ventajas y aplicaciones específicas.",
+      icon: Target,
+      color: "from-fuchsia-500 to-pink-600"
+    },
+    {
+      id: 8,
+      title: "Impulso específico",
+      description: "Medición de eficiencia de propelentes y optimización del rendimiento.",
+      icon: Users,
+      color: "from-violet-500 to-purple-600"
+    }
   ];
 
-  const calculateDeltaV = () => {
-    const { ve, m0, mf } = tsiolData;
-    if (m0 <= mf || mf <= 0) return 0;
-    return ve * Math.log(m0 / mf);
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 60 },
+    visible: { opacity: 1, y: 0 }
   };
 
-  const orbits = [
-    { name: 'LEO', height: '160–2,000 km', use: 'ISS, Starlink', color: '#60a5fa' },
-    { name: 'MEO', height: '2,000–35,786 km', use: 'GPS, Galileo', color: '#34d399' },
-    { name: 'GEO', height: '35,786 km', use: 'Comunicaciones', color: '#fbbf24' },
-    { name: 'HEO', height: 'Altamente elíptica', use: 'Observación polar', color: '#f87171' },
-  ];
-
-  const rockets = [
-    { name: 'Saturn V', type: 'Líquido', stages: 3, isp: 263 },
-    { name: 'Space Shuttle', type: 'Híbrido', stages: 2, isp: 455 },
-    { name: 'Falcon 9', type: 'Líquido', stages: 2, isp: 311 },
-    { name: 'SLS', type: 'Sólido + Líquido', stages: 2, isp: 268 },
-  ];
+  const staggerContainer = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-950 to-black text-white overflow-x-hidden">
-      {/* Animated background stars */}
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-black text-white overflow-x-hidden">
+      {/* Stars Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {[...Array(50)].map((_, i) => (
-          <motion.div
+        {[...Array(150)].map((_, i) => (
+          <div
             key={i}
             className="absolute rounded-full bg-white"
             style={{
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
-              width: `${Math.random() * 3 + 1}px`,
-              height: `${Math.random() * 3 + 1}px`,
-            }}
-            animate={{
-              opacity: [0.2, 1, 0.2],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 2,
+              width: `${Math.random() * 3}px`,
+              height: `${Math.random() * 3}px`,
+              opacity: Math.random() * 0.8 + 0.2,
+              animation: `twinkle ${Math.random() * 5 + 3}s infinite ${Math.random() * 2}s`
             }}
           />
         ))}
+        <style jsx>{`
+          @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+          }
+        `}</style>
       </div>
 
       {/* Hero Section */}
-      <section className="relative pt-20 pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto text-center">
+      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="mb-8"
           >
-            <Rocket size={64} className="mx-auto text-blue-400 mb-6" />
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-cyan-400">
-              Fundamentos de Propulsión y Vehículos Espaciales
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 mb-6 shadow-lg">
+              <Rocket className="w-12 h-12 text-white" />
+            </div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-300">
+              Exploración Espacial: <span className="block mt-2">Fundamentos de Cohetería</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-              Curso técnico-profesional para futuros ingenieros espaciales. Domina los principios que impulsan la exploración más allá de la atmósfera.
+            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto">
+              Domina los principios científicos y tecnológicos detrás de los viajes espaciales
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full font-semibold hover:opacity-90 transition-all flex items-center justify-center gap-2">
-                <Play size={20} /> Iniciar Curso
-              </button>
-              <button className="px-8 py-3 bg-gray-800 border border-gray-700 rounded-full font-semibold hover:bg-gray-700 transition-all flex items-center justify-center gap-2">
-                <Download size={20} /> Descargar temario
-              </button>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto"
+          >
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50">
+              <div className="text-blue-400 mb-3">
+                <Rocket className="w-8 h-8 mx-auto" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">8 Módulos</h3>
+              <p className="text-gray-400">Contenido exhaustivo y actualizado</p>
+            </div>
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50">
+              <div className="text-emerald-400 mb-3">
+                <BookOpen className="w-8 h-8 mx-auto" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">40+ Lecciones</h3>
+              <p className="text-gray-400">Teoría, ejemplos y ejercicios prácticos</p>
+            </div>
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50">
+              <div className="text-purple-400 mb-3">
+                <Globe className="w-8 h-8 mx-auto" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Certificación</h3>
+              <p className="text-gray-400">Reconocimiento internacional al finalizar</p>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Curriculum */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 
-            className="text-3xl font-bold text-center mb-12"
+      {/* Course Modules Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
+            className="text-center mb-16"
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">
-              Temario del Curso
-            </span>
-          </motion.h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-400">
+              Contenido del Curso
+            </h2>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+              Un currículo diseñado por expertos en ingeniería aeroespacial para proporcionarte 
+              una comprensión profunda de los fundamentos de la cohetería y la exploración espacial.
+            </p>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              { icon: Rocket, title: "Introducción a cohetes y transbordadores", desc: "Historia, evolución y casos emblemáticos: Saturn V, Space Shuttle, Falcon 9." },
-              { icon: Orbit, title: "Órbitas terrestres y tipos", desc: "LEO, GEO, MEO, HEO: parámetros, aplicaciones y dinámica orbital." },
-              { icon: Flame, title: "Clasificación de propelentes", desc: "Sólidos, líquidos, híbridos y propulsión no química. Ventajas y limitaciones." },
-              { icon: Target, title: "Sistema de transporte interplanetario", desc: "Transferencias de Hohmann, asistencia gravitacional y ventanas de lanzamiento." },
-              { icon: Layers, title: "Ecuación y etapas del cohete", desc: "Derivación de Tsiolkovsky, vectorización por etapas y optimización de masa." },
-              { icon: BookOpen, title: "Anatomía de cohetes", desc: "Componentes clave: tanques, toberas, turbobombas y sistemas de control." },
-              { icon: Scale, title: "Cohetes sólidos, líquidos e híbridos", desc: "Comparación técnica y casos reales de desarrollo mexicano." },
-              { icon: Zap, title: "Impulso específico (Isp)", desc: "Definición física, medición y su papel como métrica clave de eficiencia." },
-            ].map((item, i) => (
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {courseModules.map((module, index) => (
               <motion.div
-                key={i}
-                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 hover:border-blue-500/50 transition-all"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                key={module.id}
+                variants={fadeInUp}
+                className="group"
               >
-                <item.icon size={32} className="text-blue-400 mb-4" />
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-400">{item.desc}</p>
+                <div className={`bg-gradient-to-br ${module.color} rounded-2xl p-6 h-full transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-2xl`}>
+                  <div className="flex items-center mb-4">
+                    <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+                      <module.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <span className="ml-3 text-lg font-semibold text-white">Módulo {module.id}</span>
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white">{module.title}</h3>
+                  <p className="text-white/90 text-sm">{module.description}</p>
+                </div>
               </motion.div>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-cyan-400">
+              ¿Qué Aprenderás?
+            </h2>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+              Este curso te proporcionará las herramientas necesarias para entender y aplicar 
+              los principios fundamentales de la ingeniería de cohetes.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mb-4">
+                <Rocket className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-white">Diseño de Cohetes</h3>
+              <p className="text-gray-300">
+                Aprende a diseñar vehículos de lanzamiento desde los principios básicos hasta 
+                configuraciones avanzadas multietapa.
+              </p>
+            </div>
+
+            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30">
+              <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center mb-4">
+                <Orbit className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-white">Mecánica Orbital</h3>
+              <p className="text-gray-300">
+                Domina las leyes de Kepler, transferencias orbitales y cálculos de trayectoria 
+                para misiones espaciales.
+              </p>
+            </div>
+
+            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30">
+              <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4">
+                <Zap className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-white">Propulsión Espacial</h3>
+              <p className="text-gray-300">
+                Comprende los sistemas de propulsión, desde motores químicos hasta tecnologías 
+                avanzadas como la propulsión eléctrica.
+              </p>
+            </div>
+
+            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30">
+              <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
+                <Globe className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-white">Misiones Interplanetarias</h3>
+              <p className="text-gray-300">
+                Planifica misiones a otros planetas, calcula ventanas de lanzamiento y 
+                entiende los desafíos de la exploración profunda.
+              </p>
+            </div>
+
+            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30">
+              <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-yellow-500 rounded-lg flex items-center justify-center mb-4">
+                <BookOpen className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-white">Matemáticas Espaciales</h3>
+              <p className="text-gray-300">
+                Aplica la ecuación de Tsiolkovsky, cálculos de delta-v y optimización de 
+                masa para misiones eficientes.
+              </p>
+            </div>
+
+            <div className="bg-gray-800/40 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/30">
+              <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+                <Atom className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 text-white">Análisis de Sistemas</h3>
+              <p className="text-gray-300">
+                Evalúa sistemas de aviónica, estructuras, recuperación y seguridad en 
+                vehículos espaciales modernos.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Talleres Interactivos */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 
-            className="text-3xl font-bold text-center mb-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-300">
-              Talleres Interactivos
-            </span>
-          </motion.h2>
-
-          {/* Simulador Tsiolkovsky */}
+      {/* CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
           <motion.div
-            className="bg-gray-800/60 backdrop-blur border border-gray-700 rounded-2xl p-6 mb-12"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="bg-gradient-to-r from-blue-600/20 to-cyan-600/20 backdrop-blur-sm rounded-3xl p-12 border border-blue-500/30"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <Layers size={28} className="text-cyan-400" />
-              <h3 className="text-2xl font-bold">Simulador: Ecuación de Tsiolkovsky</h3>
-            </div>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <div className="space-y-4 mb-6">
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Velocidad de escape efectiva (m/s)</label>
-                    <input
-                      type="range"
-                      min="1000"
-                      max="5000"
-                      value={tsiolData.ve}
-                      onChange={(e) => setTsiolData({...tsiolData, ve: Number(e.target.value)})}
-                      className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                    />
-                    <div className="flex justify-between text-xs text-gray-400 mt-1">
-                      <span>1,000</span>
-                      <span>{tsiolData.ve}</span>
-                      <span>5,000</span>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Masa inicial (kg)</label>
-                    <input
-                      type="range"
-                      min="500"
-                      max="2000"
-                      value={tsiolData.m0}
-                      onChange={(e) => setTsiolData({...tsiolData, m0: Number(e.target.value)})}
-                      className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                    />
-                    <div className="flex justify-between text-xs text-gray-400 mt-1">
-                      <span>500</span>
-                      <span>{tsiolData.m0}</span>
-                      <span>2,000</span>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-1">Masa final (kg)</label>
-                    <input
-                      type="range"
-                      min="100"
-                      max="900"
-                      value={tsiolData.mf}
-                      onChange={(e) => setTsiolData({...tsiolData, mf: Number(e.target.value)})}
-                      className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                    />
-                    <div className="flex justify-between text-xs text-gray-400 mt-1">
-                      <span>100</span>
-                      <span>{tsiolData.mf}</span>
-                      <span>900</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-blue-900/50 border border-blue-700 rounded-lg p-4">
-                  <div className="text-2xl font-bold text-cyan-300">
-                    Δv = {calculateDeltaV().toFixed(0)} m/s
-                  </div>
-                  <div className="text-sm text-gray-400 mt-1">
-                    Velocidad alcanzable con esta configuración
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col justify-center">
-                <div className="bg-gray-900 rounded-xl p-6 h-full">
-                  <h4 className="font-bold mb-3 text-blue-300">¿Cómo funciona?</h4>
-                  <p className="text-gray-300 text-sm">
-                    La ecuación de Tsiolkovsky: <code className="bg-gray-800 px-2 py-1 rounded">Δv = vₑ · ln(m₀/m_f)</code>
-                  </p>
-                  <ul className="mt-3 text-sm text-gray-400 space-y-1">
-                    <li>• <code>vₑ</code>: Velocidad de escape de los gases</li>
-                    <li>• <code>m₀</code>: Masa total inicial (cohete + propelente)</li>
-                    <li>• <code>m_f</code>: Masa final (solo estructura + carga útil)</li>
-                  </ul>
-                  <div className="mt-4 text-xs bg-yellow-900/30 border border-yellow-800 rounded px-3 py-2">
-                    <strong>💡 Consejo:</strong> Para alcanzar órbita (LEO), necesitas Δv ≈ 9,400 m/s. ¡Ajusta los parámetros!
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Comparador Isp */}
-          <motion.div
-            className="bg-gray-800/60 backdrop-blur border border-gray-700 rounded-2xl p-6"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <Zap size={28} className="text-yellow-400" />
-              <h3 className="text-2xl font-bold">Comparador de Impulso Específico (Isp)</h3>
-            </div>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <div className="space-y-4">
-                  {propellants.map((p, i) => (
-                    <motion.button
-                      key={i}
-                      className={`w-full text-left p-4 rounded-lg border transition-all ${
-                        ispData.propellant === p.name
-                          ? 'border-yellow-500 bg-yellow-900/20'
-                          : 'border-gray-700 hover:border-gray-600'
-                      }`}
-                      onClick={() => setIspData({ propellant: p.name, isp: p.isp })}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div 
-                          className="w-3 h-3 rounded-full" 
-                          style={{ backgroundColor: p.color }}
-                        />
-                        <span className="font-medium">{p.name}</span>
-                        <span className="ml-auto font-bold text-yellow-400">{p.isp} s</span>
-                      </div>
-                    </motion.button>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col justify-center">
-                <div className="bg-gray-900 rounded-xl p-6 h-full">
-                  <div className="text-center">
-                    <div className="text-5xl font-bold text-yellow-300 mb-2">
-                      {ispData.isp} s
-                    </div>
-                    <div className="text-xl font-semibold mb-1">
-                      {ispData.propellant}
-                    </div>
-                    <div className="h-4 bg-gray-700 rounded-full mt-4">
-                      <motion.div 
-                        className="h-full rounded-full bg-gradient-to-r from-yellow-500 to-orange-500"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${(ispData.isp / 3000) * 100}%` }}
-                        transition={{ duration: 0.8 }}
-                      />
-                    </div>
-                    <div className="flex justify-between text-xs text-gray-500 mt-1">
-                      <span>0 s</span>
-                      <span>3,000 s</span>
-                    </div>
-                  </div>
-                  <div className="mt-6 text-sm text-gray-400">
-                    <p>
-                      El <strong>impulso específico (Isp)</strong> mide la eficiencia de un motor: 
-                      cuántos segundos puede 1 kg de propelente generar 1 kgf de empuje.
-                    </p>
-                    <p className="mt-2">
-                      <span className="text-green-400">✓ Mayor Isp</span> = más eficiencia, pero no siempre más empuje.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Ejemplos prácticos */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 
-            className="text-3xl font-bold text-center mb-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
-              Ejemplos y Casos Reales
-            </span>
-          </motion.h2>
-
-          {/* Órbitas */}
-          <motion.div
-            className="mb-16"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <Orbit size={28} className="text-green-400" />
-              <h3 className="text-2xl font-bold">Tipos de Órbitas Terrestres</h3>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {orbits.map((orbit, i) => (
-                <motion.div
-                  key={i}
-                  className="bg-gray-800/50 border border-gray-700 rounded-xl p-5 text-center"
-                  whileHover={{ y: -5, borderColor: orbit.color }}
-                  style={{ borderLeft: `4px solid ${orbit.color}` }}
-                >
-                  <div className="text-2xl font-bold mb-1" style={{ color: orbit.color }}>
-                    {orbit.name}
-                  </div>
-                  <div className="text-sm text-gray-400 mb-2">{orbit.height}</div>
-                  <div className="text-xs bg-gray-700/50 px-2 py-1 rounded inline-block">
-                    {orbit.use}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Cohetes */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <Rocket size={28} className="text-red-400" />
-              <h3 className="text-2xl font-bold">Anatomía de Cohetes Reales</h3>
-            </div>
-            <div className="grid md:grid-cols-2 gap-6">
-              {rockets.map((r, i) => (
-                <motion.div
-                  key={i}
-                  className="bg-gray-800/50 border border-gray-700 rounded-xl overflow-hidden"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <div className="h-32 bg-gradient-to-r from-gray-900 to-gray-800 flex items-center justify-center">
-                    <div className="text-4xl font-bold text-gray-600">{r.name.split(' ')[0]}</div>
-                  </div>
-                  <div className="p-5">
-                    <div className="flex justify-between mb-2">
-                      <span className="text-gray-400">Tipo:</span>
-                      <span className="font-medium">{r.type}</span>
-                    </div>
-                    <div className="flex justify-between mb-2">
-                      <span className="text-gray-400">Etapas:</span>
-                      <span className="font-medium">{r.stages}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-400">Isp (vacío):</span>
-                      <span className="font-medium text-cyan-400">{r.isp} s</span>
-                    </div>
-                    <div className="mt-4 flex gap-2">
-                      {[...Array(r.stages)].map((_, j) => (
-                        <div 
-                          key={j} 
-                          className="h-2 flex-1 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500"
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-300">
+              Preparado para Despegar?
+            </h2>
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+              Únete a la próxima generación de ingenieros espaciales y comienza tu viaje 
+              hacia las estrellas.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-gradient-to-r from-blue-500 to-cyan-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Inscribirse al Curso
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-white/10 backdrop-blur-sm text-white font-bold py-4 px-8 rounded-xl border border-white/20 hover:bg-white/20 transition-all duration-300"
+              >
+                Ver Temario Completo
+              </motion.button>
             </div>
           </motion.div>
         </div>
@@ -430,33 +321,23 @@ const App = () => {
 
       {/* Footer */}
       <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-800">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="flex justify-center mb-4">
-            <Star size={32} className="text-yellow-400" />
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500">
+              <Rocket className="w-8 h-8 text-white" />
+            </div>
           </div>
-          <h3 className="text-2xl font-bold mb-2">¿Listo para despegar?</h3>
-          <p className="text-gray-400 max-w-2xl mx-auto mb-8">
-            Únete a la próxima cohorte del curso y conviértete en parte de la nueva generación de ingenieros espaciales mexicanos.
+          <h3 className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-300">
+            Exploración Espacial
+          </h3>
+          <p className="text-gray-400 mb-6">
+            Educación profesional en ingeniería aeroespacial
           </p>
-          <button className="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full font-semibold hover:opacity-90 transition-all flex items-center justify-center gap-2 mx-auto">
-            <Play size={20} /> Inscribirse ahora
-          </button>
-          <div className="mt-12 text-gray-500 text-sm">
-            © {new Date().getFullYear()} Fundamentos de Propulsión y Vehículos Espaciales | 
-            Diseñado para SPACE UPIICSA, ENMICE y la Cumbre Espacial Universitaria
+          <div className="text-gray-500 text-sm">
+            © 2025 Exploración Espacial. Todos los derechos reservados.
           </div>
         </div>
       </footer>
-
-      {/* Scroll indicator */}
-      <motion.button
-        className="fixed bottom-6 right-6 bg-blue-600 p-3 rounded-full shadow-lg"
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <ChevronDown size={24} className="rotate-180" />
-      </motion.button>
     </div>
   );
 };
